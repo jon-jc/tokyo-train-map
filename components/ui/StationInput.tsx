@@ -86,7 +86,10 @@ export default function StationInput({
           setActive(0);
           if (e.target.value === "") onSelect(null);
         }}
-        onFocus={() => text && setOpen(true)}
+        onFocus={(e) => {
+          e.target.select();
+          if (text) setOpen(true);
+        }}
         onKeyDown={onKey}
       />
       {open && results.length > 0 && (
