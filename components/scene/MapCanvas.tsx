@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Ground from "./Ground";
@@ -15,12 +16,22 @@ import { useMapStore } from "@/lib/store";
 
 export default function MapCanvas() {
   const select = useMapStore((s) => s.select);
+  const [autoRotate, setAutoRotate] = useState(true);
+
+  // Stop the cinematic drift as soon as the user flies somewhere
+  useEffect(
+    () =>
+      useMapStore.subscribe((s, prev) => {
+        if (s.focus !== prev.focus) setAutoRotate(false);
+      }),
+    [],
+  );
 
   return (
     <Canvas
       dpr={[1, 1.75]}
       gl={{ antialias: true, powerPreference: "high-performance" }}
-      camera={{ fov: 55, near: 1, far: 4000, position: [40, 300, 420] }}
+      camera={{ fov: 55, near: 1, far: 4000, position: [-30, 220, 330] }}
       onPointerMissed={() => select(null, false)}
     >
       <color attach="background" args={["#02040a"]} />
@@ -42,7 +53,10 @@ export default function MapCanvas() {
         maxPolarAngle={Math.PI * 0.495}
         minDistance={20}
         maxDistance={1100}
-        target={[0, 0, 0]}
+        target={[-15, 0, 25]}
+        autoRotate={autoRotate}
+        autoRotateSpeed={-0.4}
+        onStart={() => setAutoRotate(false)}
       />
       <CameraRig />
       <Effects />
