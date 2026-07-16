@@ -28,11 +28,12 @@ function makeFlowTexture(): THREE.DataTexture {
   return tex;
 }
 
-function RideLegTube({ leg }: { leg: RouteLeg }) {
+function RideLegTube({ leg, legIndex }: { leg: RouteLeg; legIndex: number }) {
   const matRef = useRef<THREE.MeshBasicMaterial>(null);
+  const drawn = useRef(0);
   const line = leg.lineId ? LINE_MAP[leg.lineId] : undefined;
 
-  const { geometry, texture, repeats } = useMemo(() => {
+  const { geometry, texture, indexCount } = useMemo(() => {
     const elev = line?.elevation ?? 0;
     const pts = leg.stations.map((id) => {
       const [x, z] = stationXZ(id);
@@ -47,20 +48,29 @@ function RideLegTube({ leg }: { leg: RouteLeg }) {
       false,
     );
     const texture = makeFlowTexture();
-    const repeats = Math.max(2, Math.round(curve.getLength() / 22));
-    texture.repeat.set(repeats, 1);
-    return { geometry, texture, repeats };
+    texture.repeat.set(Math.max(2, Math.round(curve.getLength() / 22)), 1);
+    const indexCount = geometry.index?.count ?? 0;
+    // Route draws itself on, one leg after another
+    geometry.setDrawRange(0, 0);
+    return { geometry, texture, indexCount };
   }, [leg, line]);
 
   useFrame((_, delta) => {
     texture.offset.x -= delta * 0.9;
+
+    // Draw-on: each leg sweeps in over ~0.6s, staggered by leg order
+    if (drawn.current < 1 + legIndex * 0.5) {
+      drawn.current += delta / 0.6;
+      const local = Math.min(1, Math.max(0, drawn.current - legIndex * 0.5));
+      const eased = 1 - Math.pow(1 - local, 3);
+      geometry.setDrawRange(0, Math.floor(indexCount * eased));
+    }
+
     if (matRef.current) {
       matRef.current.opacity =
         0.85 + Math.sin(performance.now() / 300) * 0.12;
     }
   });
-
-  void repeats;
 
   return (
     <mesh geometry={geometry} renderOrder={10}>
@@ -170,7 +180,7 @@ export default function RouteHighlight() {
       {route.legs
         .filter((l) => l.kind === "ride")
         .map((leg, i) => (
-          <RideLegTube key={`${leg.lineId}-${i}`} leg={leg} />
+          <RideLegTube key={`${leg.lineId}-${i}`} leg={leg} legIndex={i} />
         ))}
       {transferStations.map((id) => (
         <TransferBeam key={id} stationId={id} />

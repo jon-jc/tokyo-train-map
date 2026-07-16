@@ -3,10 +3,18 @@
 import { useMapStore } from "@/lib/store";
 import { STATIONS } from "@/lib/data/stations";
 import { LINE_MAP } from "@/lib/data/lines";
-import { OPERATOR_LABELS } from "@/lib/data/types";
 import { getStationLines } from "@/lib/graph";
+import {
+  useT,
+  stationName,
+  stationNameAlt,
+  lineName,
+  operatorLabel,
+  fmtLineCount,
+} from "@/lib/i18n";
 
 export default function StationCard() {
+  const { t, lang } = useT();
   const selected = useMapStore((s) => s.selected);
   const select = useMapStore((s) => s.select);
   const setFrom = useMapStore((s) => s.setFrom);
@@ -23,28 +31,26 @@ export default function StationCard() {
     <aside className="station-card panel">
       <button
         className="icon-btn close"
-        aria-label="Close"
+        aria-label={t("close")}
         onClick={() => select(null, false)}
       >
         ✕
       </button>
       <div>
-        <h2>{st.name}</h2>
-        <div className="jp">{st.nameJa}</div>
+        <h2>{stationName(st, lang)}</h2>
+        <div className="jp">{stationNameAlt(st, lang)}</div>
       </div>
 
       <div className="card-actions">
         <button className="btn" onClick={() => setFrom(selected)}>
-          Set Origin
+          {t("setOrigin")}
         </button>
         <button className="btn" onClick={() => setTo(selected)}>
-          Set Dest
+          {t("setDest")}
         </button>
       </div>
 
-      <div className="section-title">
-        {lineIds.length} line{lineIds.length > 1 ? "s" : ""}
-      </div>
+      <div className="section-title">{fmtLineCount(lineIds.length, lang)}</div>
       <div className="station-lines">
         {lineIds.map((id) => {
           const line = LINE_MAP[id];
@@ -53,7 +59,7 @@ export default function StationCard() {
               key={id}
               className="station-line-row"
               style={{ opacity: hiddenLines[id] ? 0.4 : 1 }}
-              title="Toggle line visibility"
+              title={t("toggleLineTitle")}
               onClick={() => toggleLine(id)}
             >
               <span
@@ -61,10 +67,12 @@ export default function StationCard() {
                 style={{ background: line.color, color: line.color }}
               />
               <span>
-                {line.name}{" "}
-                <span style={{ color: "var(--text-dim)" }}>({line.shortName})</span>
+                {lineName(line, lang)}{" "}
+                <span style={{ color: "var(--text-dim)" }}>
+                  ({line.shortName})
+                </span>
               </span>
-              <span className="op">{OPERATOR_LABELS[line.operator]}</span>
+              <span className="op">{operatorLabel(line.operator, lang)}</span>
             </button>
           );
         })}

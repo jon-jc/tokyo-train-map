@@ -11,6 +11,7 @@ import { STATIONS } from "@/lib/data/stations";
 import { LINE_MAP } from "@/lib/data/lines";
 import { searchStations } from "@/lib/search";
 import { getStationLines } from "@/lib/graph";
+import { useT, stationName, stationNameAlt } from "@/lib/i18n";
 
 export default function StationInput({
   value,
@@ -25,17 +26,18 @@ export default function StationInput({
   icon?: string;
   variant?: "from" | "to" | "";
 }) {
+  const { lang } = useT();
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
   const wrapRef = useRef<HTMLDivElement>(null);
   const listId = useId();
 
-  // Reflect external value
+  // Reflect external value (and re-render it on language change)
   useEffect(() => {
-    if (value && STATIONS[value]) setText(STATIONS[value].name);
+    if (value && STATIONS[value]) setText(stationName(STATIONS[value], lang));
     else if (!value) setText("");
-  }, [value]);
+  }, [value, lang]);
 
   // Close on outside click
   useEffect(() => {
@@ -50,7 +52,7 @@ export default function StationInput({
 
   const choose = (id: string) => {
     onSelect(id);
-    setText(STATIONS[id].name);
+    setText(stationName(STATIONS[id], lang));
     setOpen(false);
   };
 
@@ -114,8 +116,8 @@ export default function StationInput({
                     />
                   ))}
                 </span>
-                <span>{st.name}</span>
-                <span className="jp-name">{st.nameJa}</span>
+                <span>{stationName(st, lang)}</span>
+                <span className="jp-name">{stationNameAlt(st, lang)}</span>
               </button>
             );
           })}

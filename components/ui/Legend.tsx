@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { LINES } from "@/lib/data/lines";
-import { OPERATOR_LABELS, type Operator } from "@/lib/data/types";
+import type { Operator } from "@/lib/data/types";
 import { useMapStore } from "@/lib/store";
+import { useT, lineName, operatorLabel } from "@/lib/i18n";
 
 const GROUPS: Operator[] = ["jr", "metro", "toei", "waterfront"];
 
 export default function Legend() {
+  const { t, lang } = useT();
   const [openPanel, setOpenPanel] = useState(true);
   const hiddenLines = useMapStore((s) => s.hiddenLines);
   const toggleLine = useMapStore((s) => s.toggleLine);
@@ -26,7 +28,7 @@ export default function Legend() {
         aria-expanded={openPanel}
       >
         <span className="section-title" style={{ pointerEvents: "none" }}>
-          Network Lines
+          {t("networkLines")}
         </span>
         <span style={{ color: "var(--text-dim)", fontSize: 12 }}>
           {openPanel ? "▾" : "▸"}
@@ -41,9 +43,9 @@ export default function Legend() {
             return (
               <div key={op}>
                 <div className="legend-group">
-                  <span>{OPERATOR_LABELS[op]}</span>
+                  <span>{operatorLabel(op, lang)}</span>
                   <button onClick={() => setOperatorVisible(op, allHidden)}>
-                    {allHidden ? "show all" : "hide all"}
+                    {allHidden ? t("showAll") : t("hideAll")}
                   </button>
                 </div>
                 {group.map((line) => (
@@ -57,12 +59,14 @@ export default function Legend() {
                       style={{ background: line.color, color: line.color }}
                     />
                     <span>
-                      {line.name}{" "}
+                      {lineName(line, lang)}{" "}
                       <span style={{ color: "var(--text-dim)" }}>
                         {line.shortName}
                       </span>
                     </span>
-                    <span className="jp">{line.nameJa}</span>
+                    <span className="jp">
+                      {lang === "ja" ? line.name : line.nameJa}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -70,21 +74,27 @@ export default function Legend() {
           })}
 
           <div className="legend-group" style={{ marginTop: 12 }}>
-            <span>Display</span>
+            <span>{t("display")}</span>
           </div>
           <button
             className={`legend-row ${showLabels ? "" : "off"}`}
             onClick={() => setShowLabels(!showLabels)}
           >
-            <span className="swatch" style={{ background: "#00f0ff", color: "#00f0ff" }} />
-            <span>Station labels</span>
+            <span
+              className="swatch"
+              style={{ background: "#00f0ff", color: "#00f0ff" }}
+            />
+            <span>{t("stationLabels")}</span>
           </button>
           <button
             className={`legend-row ${showBuildings ? "" : "off"}`}
             onClick={() => setShowBuildings(!showBuildings)}
           >
-            <span className="swatch" style={{ background: "#33254d", color: "#5b4d8a" }} />
-            <span>City blocks</span>
+            <span
+              className="swatch"
+              style={{ background: "#33254d", color: "#5b4d8a" }}
+            />
+            <span>{t("cityBlocks")}</span>
           </button>
         </div>
       )}

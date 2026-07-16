@@ -71,6 +71,42 @@ describe("dataset integrity", () => {
     expect(LINE_MAP["yamanote"].loop).toBe(true);
   });
 
+  it("every line carries its complete official stop count", () => {
+    // Official station counts for each line (within modelled boundaries)
+    const expected: Record<string, number> = {
+      yamanote: 30,
+      "chuo-rapid": 12, // Tokyo–Mitaka segment
+      "chuo-sobu": 30, // Mitaka–Nishi-Funabashi segment
+      "keihin-tohoku": 22, // Akabane–Kamata segment
+      saikyo: 8, // Osaki–Akabane segment
+      ginza: 19,
+      marunouchi: 25,
+      "marunouchi-branch": 4,
+      hibiya: 22,
+      tozai: 23,
+      chiyoda: 20,
+      "yurakucho-line": 24,
+      hanzomon: 14,
+      namboku: 19,
+      fukutoshin: 16,
+      "asakusa-line": 20,
+      "mita-line": 27,
+      "shinjuku-line": 21,
+      oedo: 28, // loop section
+      "oedo-branch": 11, // Hikarigaoka–Tochomae section
+      yurikamome: 16,
+      rinkai: 8,
+    };
+    for (const [id, count] of Object.entries(expected)) {
+      expect(LINE_MAP[id], id).toBeDefined();
+      expect(LINE_MAP[id].stations.length, id).toBe(count);
+    }
+    // and no line exists that isn't audited above
+    for (const line of LINES) {
+      expect(expected[line.id], `unaudited line ${line.id}`).toBeDefined();
+    }
+  });
+
   it("underground lines are below ground, surface lines above", () => {
     for (const line of LINES) {
       if (line.operator === "metro" || line.id === "oedo") {

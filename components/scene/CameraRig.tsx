@@ -7,7 +7,12 @@ import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { useMapStore } from "@/lib/store";
 
 const FLY_SECONDS = 1.5;
+const INTRO_SECONDS = 3.2;
 const ARRIVE_DISTANCE = 130;
+
+/** Where the intro flight lands — the default working view. */
+export const HOME_POSITION = new THREE.Vector3(-30, 220, 330);
+export const HOME_TARGET = new THREE.Vector3(-15, 0, 25);
 
 const easeInOutCubic = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -17,6 +22,9 @@ interface Flight {
   toTarget: THREE.Vector3;
   fromPos: THREE.Vector3;
   toPos: THREE.Vector3;
+  /** extra height added at the flight midpoint */
+  arc: number;
+  seconds: number;
   t: number;
 }
 
@@ -25,8 +33,34 @@ export default function CameraRig() {
   const camera = useThree((s) => s.camera);
   const flight = useRef<Flight | null>(null);
   const lastKey = useRef(0);
+  const introDone = useRef(false);
 
   const focus = useMapStore((s) => s.focus);
+
+  // Cinematic intro: swoop from the opening high orbit down to the home view
+  useEffect(() => {
+    if (!controls || introDone.current) return;
+    introDone.current = true;
+    flight.current = {
+      fromTarget: controls.target.clone(),
+      toTarget: HOME_TARGET.clone(),
+      fromPos: camera.position.clone(),
+      toPos: HOME_POSITION.clone(),
+      arc: 0,
+      seconds: INTRO_SECONDS,
+      t: 0,
+    };
+  }, [controls, camera]);
+
+  // A user grab cancels any scripted flight immediately
+  useEffect(() => {
+    if (!controls) return;
+    const cancel = () => {
+      flight.current = null;
+    };
+    controls.addEventListener("start", cancel);
+    return () => controls.removeEventListener("start", cancel);
+  }, [controls]);
 
   useEffect(() => {
     if (!focus || !controls || focus.key === lastKey.current) return;
@@ -41,21 +75,32 @@ export default function CameraRig() {
     const dir = fromPos.clone().sub(fromTarget);
     if (dir.lengthSq() < 1) dir.set(0, 1, 1);
     dir.normalize();
-    const toPos = toTarget
-      .clone()
-      .add(dir.multiplyScalar(ARRIVE_DISTANCE));
+    const toPos = toTarget.clone().add(dir.multiplyScalar(ARRIVE_DISTANCE));
     toPos.y = Math.max(toPos.y, 70);
 
-    flight.current = { fromTarget, toTarget, fromPos, toPos, t: 0 };
+    // Long hops get a graceful vertical arc
+    const travel = fromPos.distanceTo(toPos);
+    const arc = Math.min(90, travel * 0.18);
+
+    flight.current = {
+      fromTarget,
+      toTarget,
+      fromPos,
+      toPos,
+      arc,
+      seconds: FLY_SECONDS,
+      t: 0,
+    };
   }, [focus, controls, camera]);
 
   useFrame((_, delta) => {
     const f = flight.current;
     if (!f || !controls) return;
-    f.t = Math.min(1, f.t + delta / FLY_SECONDS);
+    f.t = Math.min(1, f.t + delta / f.seconds);
     const k = easeInOutCubic(f.t);
     controls.target.lerpVectors(f.fromTarget, f.toTarget, k);
     camera.position.lerpVectors(f.fromPos, f.toPos, k);
+    camera.position.y += Math.sin(Math.PI * k) * f.arc;
     controls.update();
     if (f.t >= 1) flight.current = null;
   });

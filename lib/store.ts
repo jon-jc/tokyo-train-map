@@ -7,6 +7,18 @@ import type { Operator } from "./data/types";
 import { stationXZ } from "./geo";
 
 export type ViewMode = "all" | "surface" | "underground";
+export type Lang = "en" | "ja";
+
+function initialLang(): Lang {
+  if (typeof window === "undefined") return "en";
+  try {
+    const saved = window.localStorage.getItem("ntt-lang");
+    if (saved === "ja" || saved === "en") return saved;
+  } catch {
+    /* storage unavailable */
+  }
+  return "en";
+}
 
 /** Is a line part of the currently selected vertical level? */
 export function lineInMode(lineId: string, mode: ViewMode): boolean {
@@ -32,6 +44,7 @@ interface MapStore {
   showLabels: boolean;
   showBuildings: boolean;
   viewMode: ViewMode;
+  lang: Lang;
 
   setHovered: (id: string | null) => void;
   select: (id: string | null, fly?: boolean) => void;
@@ -46,6 +59,7 @@ interface MapStore {
   setShowLabels: (v: boolean) => void;
   setShowBuildings: (v: boolean) => void;
   setViewMode: (mode: ViewMode) => void;
+  setLang: (lang: Lang) => void;
 }
 
 let focusKey = 0;
@@ -67,6 +81,7 @@ export const useMapStore = create<MapStore>((set, get) => ({
   showLabels: true,
   showBuildings: true,
   viewMode: "all",
+  lang: initialLang(),
 
   setHovered: (id) => {
     if (get().hovered !== id) set({ hovered: id });
@@ -128,6 +143,15 @@ export const useMapStore = create<MapStore>((set, get) => ({
   setShowLabels: (v) => set({ showLabels: v }),
   setShowBuildings: (v) => set({ showBuildings: v }),
   setViewMode: (mode) => set({ viewMode: mode }),
+
+  setLang: (lang) => {
+    set({ lang });
+    try {
+      window.localStorage.setItem("ntt-lang", lang);
+    } catch {
+      /* storage unavailable */
+    }
+  },
 }));
 
 /** Line ids participating in the current route (for scene dimming). */

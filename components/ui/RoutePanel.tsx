@@ -3,10 +3,18 @@
 import { useMapStore } from "@/lib/store";
 import { LINE_MAP } from "@/lib/data/lines";
 import { STATIONS } from "@/lib/data/stations";
-import { OPERATOR_LABELS } from "@/lib/data/types";
+import {
+  useT,
+  stationName,
+  lineName,
+  operatorLabel,
+  fmtTransfers,
+  fmtStops,
+} from "@/lib/i18n";
 import StationInput from "./StationInput";
 
 export default function RoutePanel() {
+  const { t, lang } = useT();
   const from = useMapStore((s) => s.from);
   const to = useMapStore((s) => s.to);
   const route = useMapStore((s) => s.route);
@@ -19,32 +27,28 @@ export default function RoutePanel() {
   return (
     <>
       <div className="panel route-box">
-        <div className="section-title">Route Planner</div>
+        <div className="section-title">{t("routePlanner")}</div>
         <StationInput
           value={from}
           onSelect={setFrom}
-          placeholder="Origin station…"
+          placeholder={t("originPh")}
           icon="▲"
           variant="from"
         />
         <StationInput
           value={to}
           onSelect={setTo}
-          placeholder="Destination station…"
+          placeholder={t("destPh")}
           icon="▼"
           variant="to"
         />
         <div className="route-actions">
-          <button
-            className="icon-btn"
-            title="Swap origin and destination"
-            onClick={swapEnds}
-          >
+          <button className="icon-btn" title={t("swapTitle")} onClick={swapEnds}>
             ⇅
           </button>
           {(from || to || route) && (
             <button className="btn ghost small" onClick={clearRoute}>
-              Clear
+              {t("clear")}
             </button>
           )}
           {route && (
@@ -52,7 +56,7 @@ export default function RoutePanel() {
               className="btn small"
               onClick={() => focusStation(route.from)}
             >
-              Follow
+              {t("follow")}
             </button>
           )}
         </div>
@@ -60,10 +64,8 @@ export default function RoutePanel() {
 
       {from && to && !route && (
         <div className="panel route-box">
-          <div className="section-title">No Route</div>
-          <div className="leg-detail">
-            No connection found between these stations.
-          </div>
+          <div className="section-title">{t("noRoute")}</div>
+          <div className="leg-detail">{t("noRouteMsg")}</div>
         </div>
       )}
 
@@ -72,14 +74,15 @@ export default function RoutePanel() {
           <div className="route-summary">
             <span>
               <span className="big">{route.totalMinutes}</span>{" "}
-              <span className="unit">min</span>
+              <span className="unit">{t("minUnit")}</span>
             </span>
             <span className="meta">
               {route.transfers === 0
-                ? "direct"
-                : `${route.transfers} transfer${route.transfers > 1 ? "s" : ""}`}
+                ? t("direct")
+                : fmtTransfers(route.transfers, lang)}
               {" · "}
-              {STATIONS[route.from].name} → {STATIONS[route.to].name}
+              {stationName(STATIONS[route.from], lang)} →{" "}
+              {stationName(STATIONS[route.to], lang)}
             </span>
           </div>
 
@@ -89,7 +92,9 @@ export default function RoutePanel() {
               const b = STATIONS[leg.stations[leg.stations.length - 1]];
               return (
                 <div className="transfer-note" key={`walk-${i}`}>
-                  walk {a.name} → {b.name} · {Math.round(leg.minutes)} min
+                  {t("walk")} {stationName(a, lang)} → {stationName(b, lang)} ·{" "}
+                  {Math.round(leg.minutes)}
+                  {t("minUnit")}
                 </div>
               );
             }
@@ -106,22 +111,26 @@ export default function RoutePanel() {
               >
                 <div className="leg-line" style={{ color: line.color }}>
                   <span className="badge">{line.shortName}</span>
-                  <span>{line.name}</span>
+                  <span>{lineName(line, lang)}</span>
                 </div>
                 <div className="leg-detail">
-                  {OPERATOR_LABELS[line.operator]} · {stops} stop
-                  {stops > 1 ? "s" : ""} · {Math.round(leg.minutes)} min
+                  {operatorLabel(line.operator, lang)} · {fmtStops(stops, lang)}{" "}
+                  · {Math.round(leg.minutes)}
+                  {t("minUnit")}
                 </div>
                 <div className="leg-stations">
-                  <b>{fromSt.name}</b>
+                  <b>{stationName(fromSt, lang)}</b>
                   {leg.stations.length > 2 && (
-                    <> → {leg.stations
-                      .slice(1, -1)
-                      .map((id) => STATIONS[id].name)
-                      .join(" → ")}</>
+                    <>
+                      {" → "}
+                      {leg.stations
+                        .slice(1, -1)
+                        .map((id) => stationName(STATIONS[id], lang))
+                        .join(" → ")}
+                    </>
                   )}
                   {" → "}
-                  <b>{toSt.name}</b>
+                  <b>{stationName(toSt, lang)}</b>
                 </div>
               </div>
             );

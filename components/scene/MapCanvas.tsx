@@ -10,6 +10,7 @@ import StationNodes from "./StationNodes";
 import Trains from "./Trains";
 import Labels from "./Labels";
 import RouteHighlight from "./RouteHighlight";
+import SelectedPulse from "./SelectedPulse";
 import CameraRig from "./CameraRig";
 import Effects from "./Effects";
 import { useMapStore } from "@/lib/store";
@@ -31,7 +32,7 @@ export default function MapCanvas() {
     <Canvas
       dpr={[1, 1.75]}
       gl={{ antialias: true, powerPreference: "high-performance" }}
-      camera={{ fov: 55, near: 1, far: 4000, position: [-30, 220, 330] }}
+      camera={{ fov: 55, near: 1, far: 4000, position: [-320, 640, 860] }}
       onPointerMissed={() => select(null, false)}
     >
       <color attach="background" args={["#02040a"]} />
@@ -43,6 +44,7 @@ export default function MapCanvas() {
       <StationNodes />
       <Trains />
       <RouteHighlight />
+      <SelectedPulse />
       <Labels />
 
       <OrbitControls

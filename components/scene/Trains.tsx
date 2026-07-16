@@ -23,6 +23,7 @@ interface TrainState {
 
 function LineTrains({ geom }: { geom: LineGeometry }) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
+  const trailRef = useRef<THREE.InstancedMesh>(null);
   const { line, curve, length } = geom;
 
   const count = Math.min(8, Math.max(2, Math.floor(line.stations.length / 4)));
@@ -38,16 +39,19 @@ function LineTrains({ geom }: { geom: LineGeometry }) {
 
   useFrame((_, delta) => {
     const mesh = meshRef.current;
-    if (!mesh) return;
+    const trail = trailRef.current;
+    if (!mesh || !trail) return;
 
     const { hiddenLines, route, viewMode } = useMapStore.getState();
     const activeIds = routeLineIds(route);
     const dimmed = route ? !activeIds.has(line.id) : false;
-    mesh.visible =
+    const visible =
       hiddenLines[line.id] !== true &&
       !dimmed &&
       lineInMode(line.id, viewMode);
-    if (!mesh.visible) return;
+    mesh.visible = visible;
+    trail.visible = visible;
+    if (!visible) return;
 
     const du = (SPEED * delta * 60) / length;
 
@@ -66,24 +70,48 @@ function LineTrains({ geom }: { geom: LineGeometry }) {
       }
 
       curve.getPointAt(t.u, tmpPos);
-      const tangent = curve.getTangentAt(t.u);
-      tmpQuat.setFromUnitVectors(FORWARD, tangent.multiplyScalar(t.dir));
+      const tangent = curve.getTangentAt(t.u).multiplyScalar(t.dir);
+      tmpQuat.setFromUnitVectors(FORWARD, tangent);
       tmpMatrix.compose(tmpPos, tmpQuat, tmpScale);
       mesh.setMatrixAt(i, tmpMatrix);
+
+      // Fading light-trail streaking behind the head
+      tmpPos.addScaledVector(tangent, -3.4);
+      tmpMatrix.compose(tmpPos, tmpQuat, tmpScale);
+      trail.setMatrixAt(i, tmpMatrix);
     });
     mesh.instanceMatrix.needsUpdate = true;
+    trail.instanceMatrix.needsUpdate = true;
   });
 
   return (
-    <instancedMesh
-      ref={meshRef}
-      args={[undefined, undefined, count]}
-      raycast={() => null}
-      frustumCulled={false}
-    >
-      <capsuleGeometry args={[0.55, 2.6, 4, 8]} />
-      <meshBasicMaterial color={line.color} toneMapped={false} />
-    </instancedMesh>
+    <group>
+      <instancedMesh
+        ref={meshRef}
+        args={[undefined, undefined, count]}
+        raycast={() => null}
+        frustumCulled={false}
+      >
+        <capsuleGeometry args={[0.55, 2.6, 4, 8]} />
+        <meshBasicMaterial color={line.color} toneMapped={false} />
+      </instancedMesh>
+      <instancedMesh
+        ref={trailRef}
+        args={[undefined, undefined, count]}
+        raycast={() => null}
+        frustumCulled={false}
+      >
+        <capsuleGeometry args={[0.42, 5.2, 3, 6]} />
+        <meshBasicMaterial
+          color={line.color}
+          transparent
+          opacity={0.22}
+          toneMapped={false}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </instancedMesh>
+    </group>
   );
 }
 
