@@ -3,6 +3,11 @@
 import { useEffect, useState } from "react";
 import { STATION_LIST } from "@/lib/data/stations";
 import { LINES } from "@/lib/data/lines";
+import { useMapStore } from "@/lib/store";
+import StationInput from "./StationInput";
+import RoutePanel from "./RoutePanel";
+import StationCard from "./StationCard";
+import Legend from "./Legend";
 
 function TokyoClock() {
   const [time, setTime] = useState("--:--:--");
@@ -23,6 +28,22 @@ function TokyoClock() {
     <div className="clock panel">
       <span className="time">{time}</span>
       <span className="label">TOKYO JST</span>
+    </div>
+  );
+}
+
+function Locate() {
+  const select = useMapStore((s) => s.select);
+  const selected = useMapStore((s) => s.selected);
+  return (
+    <div className="panel route-box">
+      <div className="section-title">Locate</div>
+      <StationInput
+        value={selected}
+        onSelect={(id) => select(id)}
+        placeholder="Search station · 駅名検索…"
+        icon="⌖"
+      />
     </div>
   );
 }
@@ -48,6 +69,14 @@ export default function HUD() {
           </span>
         </div>
       </header>
+
+      <div className="left-stack">
+        <Locate />
+        <RoutePanel />
+      </div>
+
+      <StationCard />
+      <Legend />
 
       <div className="bottom-left">
         <div className="hints panel">
