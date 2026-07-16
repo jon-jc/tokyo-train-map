@@ -4,6 +4,11 @@ import { useMapStore } from "@/lib/store";
 import { LINE_MAP } from "@/lib/data/lines";
 import { STATIONS } from "@/lib/data/stations";
 import {
+  STATION_EXITS,
+  getTransferHint,
+  getWalkHint,
+} from "@/lib/data/exits";
+import {
   useT,
   stationName,
   lineName,
@@ -90,25 +95,50 @@ export default function RoutePanel() {
             if (leg.kind === "walk") {
               const a = STATIONS[leg.stations[0]];
               const b = STATIONS[leg.stations[leg.stations.length - 1]];
+              const hint = getWalkHint(a.id, b.id, lang);
               return (
-                <div className="transfer-note" key={`walk-${i}`}>
-                  {t("walk")} {stationName(a, lang)} → {stationName(b, lang)} ·{" "}
-                  {Math.round(leg.minutes)}
-                  {t("minUnit")}
+                <div key={`walk-${i}`}>
+                  <div className="transfer-note">
+                    {t("walk")} {stationName(a, lang)} →{" "}
+                    {stationName(b, lang)} · {Math.round(leg.minutes)}
+                    {t("minUnit")}
+                  </div>
+                  {hint && <div className="tb-hint walk">{hint}</div>}
                 </div>
               );
             }
             const line = leg.lineId ? LINE_MAP[leg.lineId] : null;
             if (!line) return null;
+
+            // Same-station line change: show the optimal exit/passage
+            const prev = route.legs[i - 1];
+            const transferBlock =
+              prev && prev.kind === "ride" && leg.lineId ? (
+                <div
+                  className="transfer-block"
+                  style={{ ["--tb-color" as string]: line.color }}
+                >
+                  <div className="tb-head">
+                    <span className="tb-icon">⇄</span>
+                    {t("transferAt")} ·{" "}
+                    <b>{stationName(STATIONS[leg.stations[0]], lang)}</b>
+                    <span className="tb-time">{t("approxMin")}</span>
+                  </div>
+                  <div className="tb-hint">
+                    {getTransferHint(leg.stations[0], leg.lineId, lang)}
+                  </div>
+                </div>
+              ) : null;
             const fromSt = STATIONS[leg.stations[0]];
             const toSt = STATIONS[leg.stations[leg.stations.length - 1]];
             const stops = leg.stations.length - 1;
             return (
-              <div
-                className="leg"
-                key={`${line.id}-${i}`}
-                style={{ ["--leg-color" as string]: line.color }}
-              >
+              <div key={`${line.id}-${i}`}>
+                {transferBlock}
+                <div
+                  className="leg"
+                  style={{ ["--leg-color" as string]: line.color }}
+                >
                 <div className="leg-line" style={{ color: line.color }}>
                   <span className="badge">{line.shortName}</span>
                   <span>{lineName(line, lang)}</span>
@@ -132,9 +162,25 @@ export default function RoutePanel() {
                   {" → "}
                   <b>{stationName(toSt, lang)}</b>
                 </div>
+                </div>
               </div>
             );
           })}
+
+          {STATION_EXITS[route.to] && (
+            <div className="dest-exits">
+              <div className="section-title">
+                {t("exitsLabel")} · {stationName(STATIONS[route.to], lang)}
+              </div>
+              <div className="exit-chips">
+                {STATION_EXITS[route.to].map((e) => (
+                  <span className="exit-chip" key={e}>
+                    {e}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </>

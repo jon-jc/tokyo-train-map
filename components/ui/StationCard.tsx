@@ -3,6 +3,7 @@
 import { useMapStore } from "@/lib/store";
 import { STATIONS } from "@/lib/data/stations";
 import { LINE_MAP } from "@/lib/data/lines";
+import { STATION_EXITS } from "@/lib/data/exits";
 import { getStationLines } from "@/lib/graph";
 import {
   useT,
@@ -77,6 +78,19 @@ export default function StationCard() {
           );
         })}
       </div>
+
+      {STATION_EXITS[selected] && (
+        <>
+          <div className="section-title">{t("exitsLabel")}</div>
+          <div className="exit-chips">
+            {STATION_EXITS[selected].map((e) => (
+              <span className="exit-chip" key={e}>
+                {e}
+              </span>
+            ))}
+          </div>
+        </>
+      )}
     </aside>
   );
 }

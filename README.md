@@ -34,6 +34,10 @@ line in real time, and plan real routes across JR, Tokyo Metro, Toei, Yurikamome
 - Results show total time, transfer count, per-leg line badges, stop-by-stop breakdown
   and walking segments; the 3D scene dims to the route with energy-flow tubes,
   transfer beams and pulsing origin/destination markers
+- **Exit-level wayfinding** — every transfer shows the optimal passage or exit
+  (cross-platform gems like Omotesando G⇄Z and Akasaka-Mitsuke G⇄M are called out),
+  walking transfers give exit-to-exit street directions, and destinations list
+  their notable exits (guidance is curated and approximate — follow on-site signs)
 - **Bilingual fuzzy search** (romaji or Japanese) with keyboard navigation
 - **Station cards** — serving lines, operators, one-tap set-origin / set-destination
 - **Line filters** — toggle any line or whole operator group (JR / Metro / Toei / Waterfront)

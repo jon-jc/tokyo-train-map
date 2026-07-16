@@ -255,7 +255,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: calc(100% - 140px);
+  max-height: calc(100% - 250px);
 }
 
 .section-title {
@@ -618,6 +618,81 @@ body {
 .leg .leg-stations b {
   color: var(--text);
   font-weight: 600;
+}
+
+/* ---------- transfer / exit wayfinding ---------- */
+
+.transfer-block {
+  margin: 2px 0 8px;
+  padding: 8px 10px;
+  background: rgba(255, 214, 10, 0.05);
+  border: 1px solid rgba(255, 214, 10, 0.25);
+  border-left: 3px solid var(--tb-color, var(--yellow));
+}
+
+.tb-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+
+.tb-head b {
+  color: var(--text);
+  letter-spacing: 0.06em;
+}
+
+.tb-icon {
+  font-size: 13px;
+}
+
+.tb-time {
+  margin-left: auto;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+.tb-hint {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.tb-hint.walk {
+  margin: 4px 0 8px;
+  padding-left: 4px;
+  color: var(--text-dim);
+  font-size: 12.5px;
+}
+
+.dest-exits {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--cyan-faint);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.exit-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.exit-chip {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  background: rgba(0, 240, 255, 0.05);
+  color: var(--text);
+  border-radius: 2px;
+  white-space: nowrap;
 }
 
 .transfer-note {

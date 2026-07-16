@@ -46,6 +46,9 @@ const dict = {
     hintStation: "STATION",
     jst: "TOKYO JST",
     close: "Close",
+    transferAt: "Transfer",
+    exitsLabel: "Station exits",
+    approxMin: "~6 min",
   },
   ja: {
     subtitle: "鉄道網ナビゲーター",
@@ -87,6 +90,9 @@ const dict = {
     hintStation: "駅を選択",
     jst: "東京時間",
     close: "閉じる",
+    transferAt: "乗換",
+    exitsLabel: "駅出口",
+    approxMin: "約6分",
   },
 } as const;
 
