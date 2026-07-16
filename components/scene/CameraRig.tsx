@@ -10,9 +10,12 @@ const FLY_SECONDS = 1.5;
 const INTRO_SECONDS = 3.2;
 const ARRIVE_DISTANCE = 180;
 
-/** Where the intro flight lands — the default working view. */
-export const HOME_POSITION = new THREE.Vector3(-40, 300, 450);
-export const HOME_TARGET = new THREE.Vector3(-20, 0, 35);
+/**
+ * Where the intro flight lands — frames the Yamanote core at a distance
+ * where station labels stay clearly separated; pan/zoom out for suburbs.
+ */
+export const HOME_POSITION = new THREE.Vector3(-49, 300, 465);
+export const HOME_TARGET = new THREE.Vector3(-29, 0, 50);
 
 const easeInOutCubic = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;

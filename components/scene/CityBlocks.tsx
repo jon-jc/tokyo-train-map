@@ -19,15 +19,15 @@ const COUNT = 900;
 
 /** Skyline hotspots roughly matching Tokyo's dense districts (scene XZ). */
 const HOTSPOTS: Array<[number, number, number]> = [
-  [-113, -12, 63], // Shinjuku
-  [-111, 76, 55], // Shibuya
-  [-91, -124, 58], // Ikebukuro
-  [36, 11, 60], // Marunouchi / Tokyo
-  [32, 52, 50], // Ginza / Shimbashi
-  [-44, 62, 47], // Roppongi
-  [58, -83, 47], // Ueno / Asakusa
-  [52, 144, 55], // Odaiba / waterfront
-  [-28, 158, 41], // Shinagawa
+  [-161, -17, 90], // Shinjuku
+  [-159, 109, 79], // Shibuya
+  [-130, -177, 83], // Ikebukuro
+  [51, 16, 86], // Marunouchi / Tokyo
+  [46, 74, 71], // Ginza / Shimbashi
+  [-63, 89, 67], // Roppongi
+  [83, -119, 67], // Ueno / Asakusa
+  [74, 206, 79], // Odaiba / waterfront
+  [-40, 226, 59], // Shinagawa
 ];
 
 export default function CityBlocks() {
