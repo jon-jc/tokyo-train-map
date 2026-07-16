@@ -1,12 +1,22 @@
 "use client";
 
+import MapCanvas from "./scene/MapCanvas";
+import HUD from "./ui/HUD";
+import { useMapStore } from "@/lib/store";
+
+if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+  (window as unknown as Record<string, unknown>).__mapStore = useMapStore;
+}
+
 export default function App() {
   return (
-    <div className="loader">
-      <div className="title">NEO TOKYO TRANSIT</div>
-      <div className="jp">東京交通網</div>
-      <div className="bar" />
-      <div className="status">Network grid under construction…</div>
-    </div>
+    <>
+      <div className="canvas-wrap">
+        <MapCanvas />
+      </div>
+      <div className="vignette-overlay" />
+      <div className="scanlines" />
+      <HUD />
+    </>
   );
 }
