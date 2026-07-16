@@ -2,9 +2,18 @@
 
 import { create } from "zustand";
 import { findRoute, type RouteResult } from "./graph";
-import { LINES } from "./data/lines";
+import { LINES, LINE_MAP } from "./data/lines";
 import type { Operator } from "./data/types";
 import { stationXZ } from "./geo";
+
+export type ViewMode = "all" | "surface" | "underground";
+
+/** Is a line part of the currently selected vertical level? */
+export function lineInMode(lineId: string, mode: ViewMode): boolean {
+  if (mode === "all") return true;
+  const elev = LINE_MAP[lineId]?.elevation ?? 0;
+  return mode === "surface" ? elev > 0 : elev < 0;
+}
 
 export interface FocusRequest {
   target: [number, number, number];
@@ -22,6 +31,7 @@ interface MapStore {
   focus: FocusRequest | null;
   showLabels: boolean;
   showBuildings: boolean;
+  viewMode: ViewMode;
 
   setHovered: (id: string | null) => void;
   select: (id: string | null, fly?: boolean) => void;
@@ -35,6 +45,7 @@ interface MapStore {
   setOperatorVisible: (op: Operator, visible: boolean) => void;
   setShowLabels: (v: boolean) => void;
   setShowBuildings: (v: boolean) => void;
+  setViewMode: (mode: ViewMode) => void;
 }
 
 let focusKey = 0;
@@ -55,6 +66,7 @@ export const useMapStore = create<MapStore>((set, get) => ({
   focus: null,
   showLabels: true,
   showBuildings: true,
+  viewMode: "all",
 
   setHovered: (id) => {
     if (get().hovered !== id) set({ hovered: id });
@@ -115,6 +127,7 @@ export const useMapStore = create<MapStore>((set, get) => ({
 
   setShowLabels: (v) => set({ showLabels: v }),
   setShowBuildings: (v) => set({ showBuildings: v }),
+  setViewMode: (mode) => set({ viewMode: mode }),
 }));
 
 /** Line ids participating in the current route (for scene dimming). */

@@ -3,6 +3,7 @@
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
+import { useMapStore } from "@/lib/store";
 
 const vertexShader = /* glsl */ `
   varying vec3 vWorld;
@@ -15,6 +16,7 @@ const vertexShader = /* glsl */ `
 
 const fragmentShader = /* glsl */ `
   uniform float uTime;
+  uniform float uDim;
   varying vec3 vWorld;
 
   float gridLine(vec2 p, float cell, float width) {
@@ -38,7 +40,7 @@ const fragmentShader = /* glsl */ `
     vec3 base = vec3(0.008, 0.016, 0.035);
     vec3 col = base + cyan * (fine + coarse) * 0.8 + cyan * pulse;
 
-    float alpha = (0.42 + (fine + coarse) * 1.4 + pulse) * fade;
+    float alpha = (0.42 + (fine + coarse) * 1.4 + pulse) * fade * uDim;
     gl_FragColor = vec4(col, clamp(alpha, 0.0, 0.9));
   }
 `;
@@ -46,10 +48,19 @@ const fragmentShader = /* glsl */ `
 export default function Ground() {
   const matRef = useRef<THREE.ShaderMaterial>(null);
 
-  const uniforms = useMemo(() => ({ uTime: { value: 0 } }), []);
+  const uniforms = useMemo(
+    () => ({ uTime: { value: 0 }, uDim: { value: 1 } }),
+    [],
+  );
 
   useFrame((_, delta) => {
-    if (matRef.current) matRef.current.uniforms.uTime.value += delta;
+    const mat = matRef.current;
+    if (!mat) return;
+    mat.uniforms.uTime.value += delta;
+    // X-ray the ground when the metro level is isolated
+    const target = useMapStore.getState().viewMode === "underground" ? 0.35 : 1;
+    const d = mat.uniforms.uDim;
+    d.value += (target - d.value) * 0.1;
   });
 
   return (

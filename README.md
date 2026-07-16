@@ -13,7 +13,12 @@ line in real time, and plan real routes across JR, Tokyo Metro, Toei, Yurikamome
 ## Features
 
 ### Explorable 3D network
-- **20 lines, 213 stations** with real geographic coordinates and bilingual (EN/JA) names
+- **22 lines, 269 stations** with real geographic coordinates and bilingual (EN/JA) names —
+  every Tokyo Metro and Toei line complete to its true termini, including the Marunouchi
+  Honancho and Oedo Hikarigaoka branches
+- **View levels** — isolate the elevated rail network or the subway grid with the
+  ALL / RAIL / METRO switcher; metro view x-rays the ground, brightens every subway
+  line to full strength and labels all interchanges
 - Vertically layered network — elevated JR and Yurikamome viaducts above the ground grid,
   each subway line at its own stacked depth (the Oedo line is the deepest, as in real life)
 - Neon "data pillars" rise through interchanges, connecting underground and surface layers
@@ -76,12 +81,13 @@ npm run build      # production build
 
 ## Data notes
 
-The dataset covers the core network inside (and slightly beyond) the Yamanote loop —
-all 9 Tokyo Metro lines, all 4 Toei lines, the central JR lines (Yamanote, Chuo Rapid,
-Chuo-Sobu Local, Keihin-Tohoku, Saikyo), plus Yurikamome and Rinkai. Coordinates are
-approximate and tuned for readability; travel times are estimates derived from
-inter-station distance and should not replace official timetables. Suburban tails of
-some lines are truncated at sensible boundaries to keep the map focused.
+The dataset covers all 9 Tokyo Metro lines and all 4 Toei lines **complete to their
+official termini** (Wakoshi, Nishi-Funabashi, Kita-Ayase, Nishi-Takashimadaira,
+Moto-Yawata, Nishi-Magome, Hikarigaoka…), the central JR lines (Yamanote, Chuo Rapid,
+Chuo-Sobu Local to Nishi-Funabashi, Keihin-Tohoku, Saikyo), plus Yurikamome and Rinkai.
+Coordinates are approximate and tuned for readability; travel times are estimates
+derived from inter-station distance and should not replace official timetables. JR
+suburban tails beyond the city core are truncated at sensible boundaries.
 
 ## License
 

@@ -31,7 +31,7 @@ describe("dataset integrity", () => {
       expect(st.lat, st.id).toBeGreaterThan(35.5);
       expect(st.lat, st.id).toBeLessThan(35.85);
       expect(st.lng, st.id).toBeGreaterThan(139.5);
-      expect(st.lng, st.id).toBeLessThan(139.95);
+      expect(st.lng, st.id).toBeLessThan(139.97);
     }
   });
 

@@ -4,7 +4,7 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { getLineGeometries, type LineGeometry } from "@/lib/three/network";
-import { useMapStore, routeLineIds } from "@/lib/store";
+import { useMapStore, routeLineIds, lineInMode } from "@/lib/store";
 
 /** world units per second — ~60 km/h at 55 m per unit */
 const SPEED = 0.31;
@@ -40,10 +40,13 @@ function LineTrains({ geom }: { geom: LineGeometry }) {
     const mesh = meshRef.current;
     if (!mesh) return;
 
-    const { hiddenLines, route } = useMapStore.getState();
+    const { hiddenLines, route, viewMode } = useMapStore.getState();
     const activeIds = routeLineIds(route);
     const dimmed = route ? !activeIds.has(line.id) : false;
-    mesh.visible = hiddenLines[line.id] !== true && !dimmed;
+    mesh.visible =
+      hiddenLines[line.id] !== true &&
+      !dimmed &&
+      lineInMode(line.id, viewMode);
     if (!mesh.visible) return;
 
     const du = (SPEED * delta * 60) / length;

@@ -32,7 +32,9 @@ const HOTSPOTS: Array<[number, number, number]> = [
 
 export default function CityBlocks() {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const visible = useMapStore((s) => s.showBuildings);
+  const showBuildings = useMapStore((s) => s.showBuildings);
+  const viewMode = useMapStore((s) => s.viewMode);
+  const visible = showBuildings && viewMode !== "underground";
 
   const { matrices, colors } = useMemo(() => {
     const rand = mulberry32(20260715);

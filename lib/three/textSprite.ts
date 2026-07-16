@@ -39,6 +39,16 @@ export function getLabelSprite(
   canvas.height = h;
   const ctx = canvas.getContext("2d")!;
 
+  // Backing plate so labels stay readable over bright line clusters
+  const r = 14 * dpr;
+  ctx.fillStyle = "rgba(2, 6, 14, 0.72)";
+  ctx.strokeStyle = "rgba(0, 240, 255, 0.28)";
+  ctx.lineWidth = dpr;
+  ctx.beginPath();
+  ctx.roundRect(dpr, dpr, w - 2 * dpr, h - 2 * dpr, r);
+  ctx.fill();
+  ctx.stroke();
+
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 

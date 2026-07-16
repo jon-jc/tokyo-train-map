@@ -4,7 +4,7 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { getLineGeometries } from "@/lib/three/network";
-import { useMapStore, routeLineIds } from "@/lib/store";
+import { useMapStore, routeLineIds, lineInMode } from "@/lib/store";
 
 const DIMMED_OPACITY = 0.05;
 
@@ -40,14 +40,17 @@ function LineTube({
   useFrame(() => {
     const mat = matRef.current;
     if (!mat) return;
-    const { route, hiddenLines } = useMapStore.getState();
+    const { route, hiddenLines, viewMode } = useMapStore.getState();
     const activeIds = routeLineIds(route);
-    const hidden = hiddenLines[lineId] === true;
+    const hidden =
+      hiddenLines[lineId] === true || !lineInMode(lineId, viewMode);
+    // Underground lines render at full strength when the metro level is isolated
+    const fullOpacity = viewMode === "underground" ? 1 : baseOpacity;
     const target = hidden
       ? 0
       : route && !activeIds.has(lineId)
         ? DIMMED_OPACITY
-        : baseOpacity;
+        : fullOpacity;
     mat.opacity += (target - mat.opacity) * 0.12;
     mat.visible = mat.opacity > 0.01;
   });

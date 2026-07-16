@@ -45,6 +45,10 @@ describe("route finding", () => {
       ["daiba", "ikebukuro"],
       ["naka-meguro", "oshiage"],
       ["kamata", "akabane"],
+      ["hikarigaoka", "tokyo"],
+      ["wakoshi", "moto-yawata"],
+      ["nishi-takashimadaira", "nishi-magome"],
+      ["honancho", "kita-ayase"],
     ];
     for (const [a, b] of cases) {
       const r = findRoute(a, b);

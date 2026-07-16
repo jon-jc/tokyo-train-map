@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { STATION_LIST } from "@/lib/data/stations";
 import { LINES } from "@/lib/data/lines";
-import { useMapStore } from "@/lib/store";
+import { useMapStore, type ViewMode } from "@/lib/store";
 import StationInput from "./StationInput";
 import RoutePanel from "./RoutePanel";
 import StationCard from "./StationCard";
@@ -28,6 +28,38 @@ function TokyoClock() {
     <div className="clock panel">
       <span className="time">{time}</span>
       <span className="label">TOKYO JST</span>
+    </div>
+  );
+}
+
+const MODES: Array<{ id: ViewMode; label: string; jp: string }> = [
+  { id: "all", label: "All", jp: "全線" },
+  { id: "surface", label: "Rail", jp: "地上" },
+  { id: "underground", label: "Metro", jp: "地下" },
+];
+
+function LevelSwitch() {
+  const viewMode = useMapStore((s) => s.viewMode);
+  const setViewMode = useMapStore((s) => s.setViewMode);
+  return (
+    <div className="panel route-box">
+      <div className="section-title">View Level</div>
+      <div className="seg" role="tablist" aria-label="Network level">
+        {MODES.map((m) => (
+          <button
+            key={m.id}
+            role="tab"
+            aria-selected={viewMode === m.id}
+            className={`${viewMode === m.id ? "on" : ""} ${
+              m.id === "underground" ? "metro" : ""
+            }`}
+            onClick={() => setViewMode(m.id)}
+          >
+            <span>{m.label}</span>
+            <span className="jp">{m.jp}</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
@@ -71,6 +103,7 @@ export default function HUD() {
       </header>
 
       <div className="left-stack">
+        <LevelSwitch />
         <Locate />
         <RoutePanel />
       </div>

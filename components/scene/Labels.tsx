@@ -3,9 +3,9 @@
 import { useMemo } from "react";
 import * as THREE from "three";
 import { STATIONS } from "@/lib/data/stations";
-import { getStationNode } from "@/lib/three/network";
+import { getStationNode, getStationNodes } from "@/lib/three/network";
 import { getLabelSprite } from "@/lib/three/textSprite";
-import { useMapStore } from "@/lib/store";
+import { useMapStore, lineInMode } from "@/lib/store";
 
 const LABEL_HEIGHT = 7;
 
@@ -50,14 +50,23 @@ export default function Labels() {
   const selected = useMapStore((s) => s.selected);
   const from = useMapStore((s) => s.from);
   const to = useMapStore((s) => s.to);
+  const viewMode = useMapStore((s) => s.viewMode);
 
-  const majors = useMemo(
-    () =>
-      Object.values(STATIONS)
-        .filter((s) => s.major)
-        .map((s) => s.id),
-    [],
-  );
+  const majors = useMemo(() => {
+    const nodes = getStationNodes();
+    const ids: string[] = [];
+    for (const n of nodes) {
+      const inMode = n.lineIds.filter((l) => lineInMode(l, viewMode));
+      if (inMode.length === 0) continue;
+      if (STATIONS[n.id].major) {
+        ids.push(n.id);
+      } else if (viewMode === "underground" && inMode.length >= 2) {
+        // In metro view, label every subway interchange for readability
+        ids.push(n.id);
+      }
+    }
+    return ids;
+  }, [viewMode]);
 
   const dynamic = new Set<string>();
   if (hovered) dynamic.add(hovered);

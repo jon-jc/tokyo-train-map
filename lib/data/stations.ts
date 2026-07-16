@@ -269,6 +269,80 @@ export const STATIONS: Record<string, StationDef> = Object.fromEntries(
     s("shijo-mae", "Shijo-mae", "市場前", 35.645, 139.788),
     s("shin-toyosu", "Shin-Toyosu", "新豊洲", 35.6497, 139.7915),
 
+    // ---------------- Tozai east extension ----------------
+    s("urayasu", "Urayasu", "浦安", 35.6653, 139.8926),
+    s("minami-gyotoku", "Minami-Gyotoku", "南行徳", 35.6584, 139.9091),
+    s("gyotoku", "Gyotoku", "行徳", 35.683, 139.9265),
+    s("myoden", "Myoden", "妙典", 35.6907, 139.9385),
+    s("baraki-nakayama", "Baraki-Nakayama", "原木中山", 35.7043, 139.941),
+    s("nishi-funabashi", "Nishi-Funabashi", "西船橋", 35.7073, 139.9588),
+
+    // ---------------- Chuo-Sobu east extension ----------------
+    s("kameido", "Kameido", "亀戸", 35.697, 139.8264),
+    s("hirai", "Hirai", "平井", 35.706, 139.8425),
+    s("shin-koiwa", "Shin-Koiwa", "新小岩", 35.717, 139.857),
+    s("koiwa", "Koiwa", "小岩", 35.7331, 139.8817),
+    s("ichikawa", "Ichikawa", "市川", 35.7286, 139.9078),
+    s("moto-yawata", "Moto-Yawata", "本八幡", 35.7205, 139.9269),
+    s("shimousa-nakayama", "Shimousa-Nakayama", "下総中山", 35.7137, 139.944),
+
+    // ---------------- Chiyoda east tail ----------------
+    s("ayase", "Ayase", "綾瀬", 35.762, 139.8248),
+    s("kita-ayase", "Kita-Ayase", "北綾瀬", 35.7766, 139.8322),
+
+    // ---------------- Yurakucho / Fukutoshin west ----------------
+    s("kanamecho", "Kanamecho", "要町", 35.7318, 139.6985),
+    s("senkawa", "Senkawa", "千川", 35.7375, 139.689),
+    s("kotake-mukaihara", "Kotake-Mukaihara", "小竹向原", 35.7434, 139.678),
+    s("hikawadai", "Hikawadai", "氷川台", 35.7477, 139.665),
+    s("heiwadai", "Heiwadai", "平和台", 35.7578, 139.6535),
+    s("chikatetsu-akatsuka", "Chikatetsu-Akatsuka", "地下鉄赤塚", 35.7699, 139.6437),
+    s("chikatetsu-narimasu", "Chikatetsu-Narimasu", "地下鉄成増", 35.7768, 139.6325),
+    s("wakoshi", "Wakoshi", "和光市", 35.788, 139.6115),
+
+    // ---------------- Marunouchi Honancho branch ----------------
+    s("nakano-shimbashi", "Nakano-Shimbashi", "中野新橋", 35.6966, 139.666),
+    s("nakano-fujimicho", "Nakano-Fujimicho", "中野富士見町", 35.6911, 139.6617),
+    s("honancho", "Honancho", "方南町", 35.6857, 139.652),
+
+    // ---------------- Toei Asakusa south ----------------
+    s("togoshi", "Togoshi", "戸越", 35.6157, 139.7157),
+    s("nakanobu", "Nakanobu", "中延", 35.6106, 139.7128),
+    s("magome", "Magome", "馬込", 35.5963, 139.7118),
+    s("nishi-magome", "Nishi-Magome", "西馬込", 35.5866, 139.7056),
+
+    // ---------------- Toei Mita north ----------------
+    s("shin-itabashi", "Shin-Itabashi", "新板橋", 35.7447, 139.7157),
+    s("itabashi-kuyakushomae", "Itabashi-Kuyakushomae", "板橋区役所前", 35.7513, 139.7093),
+    s("itabashi-honcho", "Itabashi-Honcho", "板橋本町", 35.7583, 139.7069),
+    s("motohasunuma", "Motohasunuma", "本蓮沼", 35.7657, 139.7048),
+    s("shimura-sakaue", "Shimura-Sakaue", "志村坂上", 35.7729, 139.7018),
+    s("shimura-sanchome", "Shimura-Sanchome", "志村三丁目", 35.7786, 139.6947),
+    s("hasune", "Hasune", "蓮根", 35.7838, 139.6899),
+    s("nishidai", "Nishidai", "西台", 35.7877, 139.6832),
+    s("takashimadaira", "Takashimadaira", "高島平", 35.7897, 139.6759),
+    s("shin-takashimadaira", "Shin-Takashimadaira", "新高島平", 35.7896, 139.6683),
+    s("nishi-takashimadaira", "Nishi-Takashimadaira", "西高島平", 35.79, 139.6597),
+
+    // ---------------- Toei Shinjuku east ----------------
+    s("nishi-ojima", "Nishi-Ojima", "西大島", 35.6899, 139.8214),
+    s("ojima", "Ojima", "大島", 35.6898, 139.8293),
+    s("higashi-ojima", "Higashi-Ojima", "東大島", 35.6897, 139.8383),
+    s("funabori", "Funabori", "船堀", 35.6842, 139.8641),
+    s("ichinoe", "Ichinoe", "一之江", 35.6797, 139.8809),
+    s("mizue", "Mizue", "瑞江", 35.6767, 139.8938),
+    s("shinozaki", "Shinozaki", "篠崎", 35.7035, 139.905),
+
+    // ---------------- Toei Oedo Hikarigaoka branch ----------------
+    s("nishi-shinjuku-gochome", "Nishi-Shinjuku-Gochome", "西新宿五丁目", 35.6897, 139.6851),
+    s("nakai", "Nakai", "中井", 35.7146, 139.6858),
+    s("ochiai-minami-nagasaki", "Ochiai-Minami-Nagasaki", "落合南長崎", 35.7218, 139.6805),
+    s("shin-egota", "Shin-Egota", "新江古田", 35.7287, 139.6717),
+    s("nerima", "Nerima", "練馬", 35.7374, 139.6543),
+    s("toshimaen", "Toshimaen", "豊島園", 35.7418, 139.6484),
+    s("nerima-kasugacho", "Nerima-Kasugacho", "練馬春日町", 35.7478, 139.6438),
+    s("hikarigaoka", "Hikarigaoka", "光が丘", 35.7577, 139.6293),
+
     // ---------------- Rinkai line ----------------
     s("shinonome", "Shinonome", "東雲", 35.6473, 139.8033),
     s("kokusai-tenjijo", "Kokusai-Tenjijo", "国際展示場", 35.6337, 139.796),

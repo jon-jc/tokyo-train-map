@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { type ThreeEvent, useFrame } from "@react-three/fiber";
 import { getStationNodes } from "@/lib/three/network";
-import { useMapStore } from "@/lib/store";
+import { useMapStore, lineInMode } from "@/lib/store";
 
 const C_DEFAULT = new THREE.Color("#0e7f96");
 const C_MAJOR = new THREE.Color("#19c8e8");
@@ -20,7 +20,14 @@ const tmpScale = new THREE.Vector3();
 const tmpPos = new THREE.Vector3();
 
 export default function StationNodes() {
-  const nodes = useMemo(() => getStationNodes(), []);
+  const viewMode = useMapStore((s) => s.viewMode);
+  const nodes = useMemo(
+    () =>
+      getStationNodes().filter((n) =>
+        n.lineIds.some((l) => lineInMode(l, viewMode)),
+      ),
+    [viewMode],
+  );
   const discRef = useRef<THREE.InstancedMesh>(null);
   const ringRef = useRef<THREE.InstancedMesh>(null);
   const pillarRef = useRef<THREE.InstancedMesh>(null);
@@ -84,6 +91,8 @@ export default function StationNodes() {
     ring.computeBoundingSphere();
     pillar.computeBoundingSphere();
     hit.computeBoundingSphere();
+    // Force the color pass to re-run against the (possibly recreated) meshes
+    lastStateKey.current = "";
   }, [nodes, pillarNodes]);
 
   // Per-frame colors (cheap: only recolor when interaction state changes)

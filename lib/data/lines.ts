@@ -51,6 +51,8 @@ export const LINES: LineDef[] = [
       "nakano", "higashi-nakano", "okubo", "shinjuku", "yoyogi", "sendagaya",
       "shinanomachi", "yotsuya", "ichigaya", "iidabashi", "suidobashi",
       "ochanomizu", "akihabara", "asakusabashi", "ryogoku", "kinshicho",
+      "kameido", "hirai", "shin-koiwa", "koiwa", "ichikawa", "moto-yawata",
+      "shimousa-nakayama", "nishi-funabashi",
     ],
   },
   {
@@ -116,6 +118,16 @@ export const LINES: LineDef[] = [
     ],
   },
   {
+    id: "marunouchi-branch",
+    name: "Marunouchi Line (Honancho Branch)",
+    nameJa: "丸ノ内線 方南町支線",
+    shortName: "Mb",
+    color: "#ff3b47",
+    operator: "metro",
+    elevation: -8,
+    stations: ["honancho", "nakano-fujimicho", "nakano-shimbashi", "nakano-sakaue"],
+  },
+  {
     id: "hibiya",
     name: "Hibiya Line",
     nameJa: "日比谷線",
@@ -143,7 +155,8 @@ export const LINES: LineDef[] = [
       "nakano", "ochiai", "takadanobaba", "waseda", "kagurazaka", "iidabashi",
       "kudanshita", "takebashi", "otemachi", "nihombashi", "kayabacho",
       "monzen-nakacho", "kiba", "toyocho", "minami-sunamachi", "nishi-kasai",
-      "kasai",
+      "kasai", "urayasu", "minami-gyotoku", "gyotoku", "myoden",
+      "baraki-nakayama", "nishi-funabashi",
     ],
   },
   {
@@ -158,7 +171,8 @@ export const LINES: LineDef[] = [
       "yoyogi-uehara", "yoyogi-koen", "meiji-jingumae", "omotesando",
       "nogizaka", "akasaka", "kokkai-gijidomae", "kasumigaseki", "hibiya",
       "nijubashimae", "otemachi", "shin-ochanomizu", "yushima", "nezu",
-      "sendagi", "nishi-nippori", "machiya", "kita-senju",
+      "sendagi", "nishi-nippori", "machiya", "kita-senju", "ayase",
+      "kita-ayase",
     ],
   },
   {
@@ -170,10 +184,12 @@ export const LINES: LineDef[] = [
     operator: "metro",
     elevation: -16,
     stations: [
-      "ikebukuro", "higashi-ikebukuro", "gokokuji", "edogawabashi",
-      "iidabashi", "ichigaya", "kojimachi", "nagatacho", "sakuradamon",
-      "yurakucho", "ginza-itchome", "shintomicho", "tsukishima", "toyosu",
-      "tatsumi", "shin-kiba",
+      "wakoshi", "chikatetsu-narimasu", "chikatetsu-akatsuka", "heiwadai",
+      "hikawadai", "kotake-mukaihara", "senkawa", "kanamecho", "ikebukuro",
+      "higashi-ikebukuro", "gokokuji", "edogawabashi", "iidabashi",
+      "ichigaya", "kojimachi", "nagatacho", "sakuradamon", "yurakucho",
+      "ginza-itchome", "shintomicho", "tsukishima", "toyosu", "tatsumi",
+      "shin-kiba",
     ],
   },
   {
@@ -214,8 +230,10 @@ export const LINES: LineDef[] = [
     operator: "metro",
     elevation: -22,
     stations: [
-      "ikebukuro", "zoshigaya", "nishi-waseda", "higashi-shinjuku",
-      "shinjuku-sanchome", "kita-sando", "meiji-jingumae", "shibuya",
+      "wakoshi", "chikatetsu-narimasu", "chikatetsu-akatsuka", "heiwadai",
+      "hikawadai", "kotake-mukaihara", "senkawa", "kanamecho", "ikebukuro",
+      "zoshigaya", "nishi-waseda", "higashi-shinjuku", "shinjuku-sanchome",
+      "kita-sando", "meiji-jingumae", "shibuya",
     ],
   },
 
@@ -229,7 +247,8 @@ export const LINES: LineDef[] = [
     operator: "toei",
     elevation: -7,
     stations: [
-      "gotanda", "takanawadai", "sengakuji", "mita", "daimon", "shimbashi",
+      "nishi-magome", "magome", "nakanobu", "togoshi", "gotanda",
+      "takanawadai", "sengakuji", "mita", "daimon", "shimbashi",
       "higashi-ginza", "takaracho", "nihombashi", "ningyocho",
       "higashi-nihombashi", "asakusabashi", "kuramae", "asakusa",
       "honjo-azumabashi", "oshiage",
@@ -247,6 +266,10 @@ export const LINES: LineDef[] = [
       "meguro", "shirokanedai", "shirokane-takanawa", "mita", "shibakoen",
       "onarimon", "uchisaiwaicho", "hibiya", "otemachi", "jimbocho",
       "suidobashi", "kasuga", "hakusan", "sengoku", "sugamo", "nishi-sugamo",
+      "shin-itabashi", "itabashi-kuyakushomae", "itabashi-honcho",
+      "motohasunuma", "shimura-sakaue", "shimura-sanchome", "hasune",
+      "nishidai", "takashimadaira", "shin-takashimadaira",
+      "nishi-takashimadaira",
     ],
   },
   {
@@ -260,7 +283,9 @@ export const LINES: LineDef[] = [
     stations: [
       "shinjuku", "shinjuku-sanchome", "akebonobashi", "ichigaya",
       "kudanshita", "jimbocho", "ogawamachi", "iwamotocho", "bakuroyokoyama",
-      "hamacho", "morishita", "kikukawa", "sumiyoshi",
+      "hamacho", "morishita", "kikukawa", "sumiyoshi", "nishi-ojima",
+      "ojima", "higashi-ojima", "funabori", "ichinoe", "mizue", "shinozaki",
+      "moto-yawata",
     ],
   },
   {
@@ -280,6 +305,20 @@ export const LINES: LineDef[] = [
       "kiyosumi-shirakawa", "monzen-nakacho", "tsukishima", "kachidoki",
       "tsukijishijo", "shiodome", "daimon", "akabanebashi", "azabu-juban",
       "roppongi", "aoyama-itchome", "kokuritsu-kyogijo", "yoyogi", "shinjuku",
+    ],
+  },
+  {
+    id: "oedo-branch",
+    name: "Oedo Line (Hikarigaoka Branch)",
+    nameJa: "大江戸線 光が丘方面",
+    shortName: "E",
+    color: "#ff2ea6",
+    operator: "toei",
+    elevation: -24,
+    stations: [
+      "hikarigaoka", "nerima-kasugacho", "toshimaen", "nerima", "shin-egota",
+      "ochiai-minami-nagasaki", "nakai", "higashi-nakano", "nakano-sakaue",
+      "nishi-shinjuku-gochome", "tochomae",
     ],
   },
 
