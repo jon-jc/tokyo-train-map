@@ -6,8 +6,8 @@ import { useFrame } from "@react-three/fiber";
 import { getLineGeometries, type LineGeometry } from "@/lib/three/network";
 import { useMapStore, routeLineIds, lineInMode } from "@/lib/store";
 
-/** world units per second — ~60 km/h at 55 m per unit */
-const SPEED = 0.31;
+/** world units per second — ~60 km/h at 40 m per unit */
+const SPEED = 0.43;
 
 const tmpMatrix = new THREE.Matrix4();
 const tmpPos = new THREE.Vector3();

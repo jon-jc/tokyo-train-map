@@ -11,7 +11,7 @@ import { stationName, stationNameAlt } from "@/lib/i18n";
 
 const LABEL_HEIGHT = 7;
 /** Camera-to-target distance below which nearby minor stations get labels */
-const PROXIMITY_DISTANCE = 320;
+const PROXIMITY_DISTANCE = 440;
 const PROXIMITY_MAX = 48;
 
 function StationLabel({

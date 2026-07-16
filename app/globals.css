@@ -135,8 +135,8 @@ body {
   position: absolute;
   top: 16px;
   left: 16px;
-  padding: 12px 122px 10px 18px;
-  max-width: min(480px, calc(100vw - 32px));
+  padding: 12px 148px 10px 18px;
+  max-width: min(510px, calc(100vw - 32px));
 }
 
 .lang-toggle {
@@ -1048,7 +1048,7 @@ body {
 
 @media (max-width: 760px) {
   .brand {
-    padding: 9px 12px 8px;
+    padding: 9px 116px 8px 12px;
   }
 
   .brand h1 {

@@ -8,11 +8,11 @@ import { useMapStore } from "@/lib/store";
 
 const FLY_SECONDS = 1.5;
 const INTRO_SECONDS = 3.2;
-const ARRIVE_DISTANCE = 130;
+const ARRIVE_DISTANCE = 180;
 
 /** Where the intro flight lands — the default working view. */
-export const HOME_POSITION = new THREE.Vector3(-30, 220, 330);
-export const HOME_TARGET = new THREE.Vector3(-15, 0, 25);
+export const HOME_POSITION = new THREE.Vector3(-40, 300, 450);
+export const HOME_TARGET = new THREE.Vector3(-20, 0, 35);
 
 const easeInOutCubic = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -80,7 +80,7 @@ export default function CameraRig() {
 
     // Long hops get a graceful vertical arc
     const travel = fromPos.distanceTo(toPos);
-    const arc = Math.min(90, travel * 0.18);
+    const arc = Math.min(120, travel * 0.18);
 
     flight.current = {
       fromTarget,

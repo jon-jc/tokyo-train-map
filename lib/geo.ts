@@ -5,8 +5,8 @@ export const CENTER = { lat: 35.685, lng: 139.751 };
 
 const M_PER_DEG_LAT = 111320;
 const M_PER_DEG_LNG = 90430; // at ~35.7°N
-/** meters per world unit */
-const SCALE = 55;
+/** meters per world unit — lower spreads the map out for label breathing room */
+const SCALE = 40;
 
 /** Project WGS84 to scene XZ. +x = east, +z = south (so north points away). */
 export function latLngToXZ(lat: number, lng: number): [number, number] {

@@ -19,15 +19,15 @@ const COUNT = 900;
 
 /** Skyline hotspots roughly matching Tokyo's dense districts (scene XZ). */
 const HOTSPOTS: Array<[number, number, number]> = [
-  [-82, -9, 46], // Shinjuku
-  [-81, 55, 40], // Shibuya
-  [-66, -90, 42], // Ikebukuro
-  [26, 8, 44], // Marunouchi / Tokyo
-  [23, 38, 36], // Ginza / Shimbashi
-  [-32, 45, 34], // Roppongi
-  [42, -60, 34], // Ueno / Asakusa
-  [38, 105, 40], // Odaiba / waterfront
-  [-20, 115, 30], // Shinagawa
+  [-113, -12, 63], // Shinjuku
+  [-111, 76, 55], // Shibuya
+  [-91, -124, 58], // Ikebukuro
+  [36, 11, 60], // Marunouchi / Tokyo
+  [32, 52, 50], // Ginza / Shimbashi
+  [-44, 62, 47], // Roppongi
+  [58, -83, 47], // Ueno / Asakusa
+  [52, 144, 55], // Odaiba / waterfront
+  [-28, 158, 41], // Shinagawa
 ];
 
 export default function CityBlocks() {
@@ -52,8 +52,8 @@ export default function CityBlocks() {
       const spot = HOTSPOTS[Math.floor(rand() * HOTSPOTS.length)];
       const ang = rand() * Math.PI * 2;
       const rr = Math.pow(rand(), 0.55) * spot[2];
-      const x = spot[0] + Math.cos(ang) * rr + (rand() - 0.5) * 10;
-      const z = spot[1] + Math.sin(ang) * rr + (rand() - 0.5) * 10;
+      const x = spot[0] + Math.cos(ang) * rr + (rand() - 0.5) * 14;
+      const z = spot[1] + Math.sin(ang) * rr + (rand() - 0.5) * 14;
 
       const centerBoost = Math.max(0, 1 - Math.hypot(x - spot[0], z - spot[1]) / spot[2]);
       const h = 2.5 + rand() * 9 + centerBoost * rand() * 26;

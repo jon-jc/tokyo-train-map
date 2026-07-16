@@ -27,14 +27,14 @@ const fragmentShader = /* glsl */ `
 
   void main() {
     float r = length(vWorld.xz);
-    float fade = 1.0 - smoothstep(280.0, 780.0, r);
+    float fade = 1.0 - smoothstep(390.0, 1080.0, r);
 
-    float fine = gridLine(vWorld.xz, 18.0, 0.35) * 0.16;
-    float coarse = gridLine(vWorld.xz, 90.0, 0.7) * 0.32;
+    float fine = gridLine(vWorld.xz, 25.0, 0.45) * 0.16;
+    float coarse = gridLine(vWorld.xz, 125.0, 0.9) * 0.32;
 
     // radar pulse expanding from the center
-    float pulseR = mod(uTime * 55.0, 700.0);
-    float pulse = exp(-abs(r - pulseR) * 0.045) * 0.35 * (1.0 - pulseR / 800.0);
+    float pulseR = mod(uTime * 75.0, 960.0);
+    float pulse = exp(-abs(r - pulseR) * 0.033) * 0.35 * (1.0 - pulseR / 1100.0);
 
     vec3 cyan = vec3(0.0, 0.94, 1.0);
     vec3 base = vec3(0.008, 0.016, 0.035);
@@ -65,7 +65,7 @@ export default function Ground() {
 
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} renderOrder={5}>
-      <planeGeometry args={[1700, 1700, 1, 1]} />
+      <planeGeometry args={[2400, 2400, 1, 1]} />
       <shaderMaterial
         ref={matRef}
         vertexShader={vertexShader}
