@@ -31,6 +31,7 @@ export default function StationInput({
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const listId = useId();
 
   // Reflect external value (and re-render it on language change)
@@ -54,6 +55,9 @@ export default function StationInput({
     onSelect(id);
     setText(stationName(STATIONS[id], lang));
     setOpen(false);
+    // Selection is complete — release focus so the next click/typing
+    // goes where the user aims it
+    inputRef.current?.blur();
   };
 
   const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -76,6 +80,7 @@ export default function StationInput({
     <div className={`field ${variant}`} ref={wrapRef}>
       <span className="icon">{icon}</span>
       <input
+        ref={inputRef}
         value={text}
         placeholder={placeholder}
         spellCheck={false}
@@ -92,6 +97,10 @@ export default function StationInput({
           e.target.select();
           if (text) setOpen(true);
         }}
+        onBlur={() => {
+          // Delay lets a suggestion pointerdown land first
+          window.setTimeout(() => setOpen(false), 150);
+        }}
         onKeyDown={onKey}
       />
       {open && results.length > 0 && (
@@ -105,7 +114,11 @@ export default function StationInput({
                 aria-selected={i === active}
                 className={i === active ? "active" : ""}
                 onPointerEnter={() => setActive(i)}
-                onClick={() => choose(st.id)}
+                onPointerDown={(e) => {
+                  // Choose before the input blurs; keep focus where it is
+                  e.preventDefault();
+                  choose(st.id);
+                }}
               >
                 <span className="line-dots">
                   {lineIds.slice(0, 5).map((l) => (
