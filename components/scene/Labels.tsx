@@ -53,6 +53,8 @@ function StationLabel({
       position={[node.x, Math.max(node.maxY, 0) + LABEL_HEIGHT, node.z]}
       scale={[h * sprite.aspect, h, 1]}
       raycast={() => null}
+      // Topmost render layer: nothing in the scene may draw over a name
+      renderOrder={100}
     >
       <spriteMaterial
         ref={matRef}
